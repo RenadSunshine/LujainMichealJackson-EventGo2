@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EventGO - Vibrant Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #f0f7ff;
+            color: #333;
+        }
+
+        /* NAVIGATION */
+        nav {
+            background: linear-gradient(90deg, #ff6a00, #ee0979);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 0 0 20px 20px;
+        }
+        nav .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+        nav .menu a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        nav .menu a:hover {
+            background: #fff;
+            color: #ff6a00;
+        }
+
+        /* HERO / SLIDER */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            border-radius: 20px;
+            max-width: 90%;
+            height: 350px;
+        }
+        .slides {
+            display: flex;
+            transition: 0.6s;
+        }
+        .slide {
+            min-width: 100%;
+        }
+        .slide img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        .carousel button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ff6a00;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
+        /* SEARCH */
+        .search {
+            text-align: center;
+            margin: 30px;
+        }
+        .search input {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+        .search button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background: #ee0979;
+            color: #fff;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* UPCOMING EVENTS */
+        .events {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px;
+            gap: 20px;
+        }
+        .event-card {
+            min-width: 260px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+        .event-card img {
+            width: 100%;
+            height: 180px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+        .book-btn {
+            background: #ff6a00;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #ff6a00;
+            color: #fff;
+            border-radius: 20px 20px 0 0;
+            margin-top: 40px;
+        }
+
+        /* Responsive */
+        @media(max-width:768px){
+            nav { flex-direction: column; }
+            nav .menu { margin-top: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">EventGO</div>
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="#">Events</a>
+            <a href="login.html">Login/SignUp</a>
+        </div>
+    </nav>
+
+    <!-- Carousel Slider -->
+    <div class="carousel">
+        <div class="slides" id="slides">
+            <div class="slide"><img src="https://images.unsplash.com/photo-1515169067868-5387ec356754"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1506157786151-b8491531f063"></div>
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">❮</button>
+        <button class="next" onclick="moveSlide(1)">❯</button>
+    </div>
+
+    <!-- Search -->
+    <div class="search">
+        <input type="date" id="searchDate">
+        <button onclick="searchEvent()">Search</button>
+        <p id="searchResult"></p>
+    </div>
+
+    <!-- Upcoming Events -->
+    <h2 style="text-align:center;">Upcoming Events</h2>
+    <div class="events">
+        <div class="event-card" data-date="2026-11-01">
+            <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745">
+            <h3>Autumn Music Fest</h3>
+            <p>Date: 1 Nov 2026</p>
+            <p>Price: $50</p>
+            <button class="book-btn" onclick="alert('Booking Confirmed!')">Book Now</button>
+        </div>
+
+        <div class="event-card" data-date="2026-12-10">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+            <h3>Winter Food Carnival</h3>
+            <p>Date: 10 Dec 2026</p>
+            <p>Price: $40</p>
+            <button class="book-btn" onclick="alert('Booking Confirmed!')">Book Now</button>
+        </div>
+    </div>
+
+    <footer>© 2026 EventGO Vibrant Edition</footer>
+
+    <script>
+        let index=0;
+        let slides=document.getElementById("slides");
+
+        // Carousel Auto
+        setInterval(function(){
+            index++;
+            if(index>2) index=0;
+            slides.style.transform="translateX("+(-index*100)+"%)";
+        },2500);
+
+        function moveSlide(step){
+            index+=step;
+            if(index<0) index=2;
+            if(index>2) index=0;
+            slides.style.transform="translateX("+(-index*100)+"%)";
+        }
+
+        function searchEvent(){
+            let date=document.getElementById("searchDate").value;
+            let events=document.querySelectorAll(".event-card");
+            let found=false;
+            events.forEach(e=>{
+                if(e.getAttribute("data-date")===date){
+                    searchResult.innerText="Event Found: "+e.querySelector("h3").innerText;
+                    found=true;
+                }
+            });
+            if(!found){
+                searchResult.innerText="No events found on this date.";
+            }
+        }
+    </script>
+
+</body>
+</html>

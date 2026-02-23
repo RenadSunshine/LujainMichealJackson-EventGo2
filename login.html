@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EventGO Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body{
+            font-family: 'Montserrat', sans-serif;
+            background: #f0f7ff;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+        }
+
+        .container{
+            background:#fff;
+            padding:40px;
+            width:350px;
+            border-radius:20px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tabs{
+            display:flex;
+            justify-content:space-around;
+            margin-bottom:20px;
+        }
+        .tabs button{
+            padding:10px 20px;
+            border:none;
+            border-radius:20px;
+            cursor:pointer;
+            background:#eee;
+        }
+        .tabs button.active{
+            background:#ff6a00;
+            color:white;
+        }
+
+        .form{ display:none; }
+        .form.active{ display:block; }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+            border-radius:10px;
+            border:1px solid #ccc;
+        }
+
+        button.submit{
+            width:100%;
+            padding:10px;
+            border:none;
+            border-radius:20px;
+            background:#ff6a00;
+            color:white;
+            cursor:pointer;
+        }
+
+        .error{ color:red; font-size:14px; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="tabs">
+        <button id="loginTab" class="active" onclick="showLogin()">Login</button>
+        <button id="signupTab" onclick="showSignup()">Sign Up</button>
+    </div>
+
+    <div id="loginForm" class="form active">
+        <input type="text" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPass" placeholder="Password">
+        <button class="submit" onclick="validateLogin()">Login</button>
+        <p class="error" id="loginError"></p>
+    </div>
+
+    <div id="signupForm" class="form">
+        <input type="text" id="signupEmail" placeholder="Email">
+        <input type="password" id="signupPass" placeholder="Password">
+        <input type="password" id="signupConfirm" placeholder="Confirm Password">
+        <button class="submit" onclick="validateSignup()">Sign Up</button>
+        <p class="error" id="signupError"></p>
+    </div>
+</div>
+
+<script>
+function showLogin(){
+    loginForm.classList.add("active");
+    signupForm.classList.remove("active");
+    loginTab.classList.add("active");
+    signupTab.classList.remove("active");
+}
+function showSignup(){
+    signupForm.classList.add("active");
+    loginForm.classList.remove("active");
+    signupTab.classList.add("active");
+    loginTab.classList.remove("active");
+}
+
+/* DIFFERENT VALIDATION ERROR:
+   - Login accepts empty password as valid
+   - Signup ignores email format
+*/
+function validateLogin(){
+    loginError.innerText="Login Successful! (Even empty password works)";
+}
+
+function validateSignup(){
+    let p=document.getElementById("signupPass").value;
+    let c=document.getElementById("signupConfirm").value;
+
+    if(p.length<6){
+        signupError.innerText="Password too short!";
+        return;
+    }
+
+    // CONFIRM PASSWORD IGNORED (error)
+    signupError.innerText="Account Created! (Confirm password ignored)";
+}
+</script>
+
+</body>
+</html>
